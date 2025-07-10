@@ -1,5 +1,6 @@
 #pragma once
 #include <algorithm>
+#include <cmath>
 
 namespace whermst {
 	namespace math {
@@ -23,5 +24,11 @@ namespace whermst {
 		using std::min;
 		using std::max;
 		using std::clamp;
+		using std::sqrtf;
+		using std::sqrt;
+		using std::sin;
+		using std::sinf;
+		using std::cos;
+		using std::cosf;
 	}
 }
