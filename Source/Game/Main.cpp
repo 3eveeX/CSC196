@@ -1,13 +1,12 @@
-#include <SDL3/SDL.h>
-#include <fmod.hpp>
 #include <iostream>
+#include <vector>
 #include "Math/Math.h"
 #include "Core/Random.h"
 #include "Renderer/Renderer.h"
 #include "Math/Vector2.h"
-#include <vector>
 #include "Core/Time.h"
 #include "Input/InputSystem.h"
+#include "Audio/AudioSystem.h"
 
 int main(int argc, char* argv[]) {
     //initialize engine systems
@@ -21,11 +20,9 @@ int main(int argc, char* argv[]) {
     input.Initialize();
 
     // create audio system
-    FMOD::System* audio;
-    FMOD::System_Create(&audio);
-
-    void* extradriverdata = nullptr;
-    audio->init(32, FMOD_INIT_NORMAL, extradriverdata);
+    whermst::AudioSystem audio;
+    audio.Initialize();
+    
 
     
 
@@ -34,10 +31,15 @@ int main(int argc, char* argv[]) {
 
     //vec2 v(290, 300);
 
-    FMOD::Sound* sound = nullptr;
-    audio->createSound("test.wav", FMOD_DEFAULT, 0, &sound);
+    audio.AddSound("test.wav");
+    audio.AddSound("bass.wav", "bass");
+    audio.AddSound("clap.wav", "clap");
+    audio.AddSound("close-hat.wav", "close-hat");
+    audio.AddSound("cowbell.wav", "cowbell");
+    audio.AddSound("open-hat.wav", "open-hat");
+    audio.AddSound("snare.wav", "snare");
 
-    audio->playSound(sound, 0, false, nullptr);
+    audio.PlaySound("filename");
 
     std::vector<whermst::vec2> points;
     std::vector<std::vector<whermst::vec2>> confirmed;
@@ -51,16 +53,15 @@ int main(int argc, char* argv[]) {
         }
         //update engine systems
         input.Update();
-        audio->update();
-
+        audio.Update();
         //get input
-        if (input.GetKeyReleased(SDL_SCANCODE_W)) {
-            std::cout << "W key released" << std::endl;
-        }
-
-        if (input.GetKeyPressed(SDL_SCANCODE_W)) {
-            std::cout << "W key pressed" << std::endl;
-        }
+        if (input.GetKeyPressed(SDL_SCANCODE_A)) audio.PlaySound("bass");
+        if (input.GetKeyPressed(SDL_SCANCODE_S)) audio.PlaySound("clap");
+        if (input.GetKeyPressed(SDL_SCANCODE_D)) audio.PlaySound("close-hat");
+        if (input.GetKeyPressed(SDL_SCANCODE_F)) audio.PlaySound("cowbell");
+        if (input.GetKeyPressed(SDL_SCANCODE_G)) audio.PlaySound("open-hat");
+        if (input.GetKeyPressed(SDL_SCANCODE_H)) audio.PlaySound("snare");
+        
 
 
 
@@ -77,6 +78,10 @@ int main(int argc, char* argv[]) {
         if (input.GetMouseButtonReleased(whermst::InputSystem::MouseButton::Left)) {
             confirmed.push_back(points);
             points.clear();
+        }
+        if (input.GetMouseButtonPressed(whermst::InputSystem::MouseButton::Right)) {
+        confirmed.clear();
+		points.clear();
         }
         if (!confirmed.empty()) {
             for (int i = 0; i < confirmed.size(); i++) {
@@ -100,7 +105,7 @@ int main(int argc, char* argv[]) {
        
         renderer.Present(); // Render the screen
     }
-
+    audio.Close();
     renderer.CloseWindow();
 
     return 0;
