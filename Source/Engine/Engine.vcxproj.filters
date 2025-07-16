@@ -24,14 +24,11 @@
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{fd332ec7-b8e5-43dd-93ed-5bd1d81b168f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Game">
+      <UniqueIdentifier>{de4116e2-381c-41eb-b2a2-760b5e870690}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer\Renderer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Time.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
@@ -40,6 +37,18 @@
     </ClCompile>
     <ClCompile Include="Audio\AudioSystem.cpp">
       <Filter>Source\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Renderer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Model.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Actor.cpp">
+      <Filter>Source\Game</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +78,18 @@
     </ClInclude>
     <ClInclude Include="Core\StringHelper.h">
       <Filter>Source\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Vector3.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Model.h">
+      <Filter>Source\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\Transform.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Actor.h">
+      <Filter>Source\Game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

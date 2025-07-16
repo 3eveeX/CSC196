@@ -5,7 +5,10 @@
 namespace whermst {
 	template <typename T>
 	struct Vector3 {
-		T x, y, z;
+		union {
+			struct { T x, y, z; };
+			struct { T r, g, b; };
+		};
 
 		Vector3() = default;
 		Vector3(T x, T y, T z) : x{ x }, y{ y }, z{ z } {}
@@ -46,6 +49,6 @@ namespace whermst {
 	};
 
 
-	using ivec2 = Vector2<int>;
-	using vec2 = Vector2<float>;
+	using ivec3 = Vector3<int>;
+	using vec3 = Vector3<float>;
 }

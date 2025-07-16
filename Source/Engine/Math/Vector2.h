@@ -5,7 +5,10 @@
 namespace whermst {
 	template <typename T>
 	struct Vector2 {
-		T x, y;
+		union {
+			struct { T x, y; };
+			struct { T u, v; };
+		};
 
 		Vector2() = default;
 		Vector2(T x, T y) : x{ x }, y{ y } {}
@@ -37,12 +40,37 @@ namespace whermst {
 		/// Calculates the squared length (magnitude) of a 2D vector.
 		/// </summary>
 		/// <returns>The sum of the squares of the x and y components, representing the squared length of the vector.</returns>
-		float LengthSqr() { return ((x * x) + (y * y));}
+		float LengthSqr() const { return ((x * x) + (y * y));}
 		/// <summary>
 		/// Calculates the length (magnitude) of a vector.
 		/// </summary>
 		/// <returns>The length of the vector as a floating-point value.</returns>
-		float Length() { return math::sqrtf(LengthSqr()); }
+		float Length() const { return math::sqrtf(LengthSqr()); }
+		/// <summary>
+		/// Returns a normalized (unit length) version of the vector.
+		/// </summary>
+		/// <returns>A Vector2 representing this vector scaled to have a length of 1.</returns>
+		Vector2 Normalized() const { return *this / Length();}
+
+		/// <summary>
+		/// Returns the angle, in radians, between the positive x-axis and the point (x, y).
+		/// </summary>
+		/// <returns>The angle in radians computed using atan2f(y, x).</returns>
+		float Angle() const { return math::atan2f(y, x); };
+
+		/// <summary>
+		/// Returns a new vector that is the result of rotating this vector by the specified angle in radians.
+		/// </summary>
+		/// <param name="radians">The angle to rotate the vector, in radians.</param>
+		/// <returns>A new Vector2 representing the rotated vector.</returns>
+		Vector2 rotate(float radians) const {
+			Vector2 v;
+
+			v.x = x * math::cosf(radians) - y * math::sinf(radians);
+			v.y = x * math::sinf(radians) + y * math::cosf(radians);
+
+			return v;
+		}
 	};
 
 

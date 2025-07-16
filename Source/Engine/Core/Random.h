@@ -1,8 +1,8 @@
 #pragma once
 #include <cstdlib>
 
-namespace whermst {
-	namespace random {
+namespace whermst::random {
+	
 		/// <summary>
 		/// Generates a random integer value.
 		/// </summary>
@@ -29,5 +29,5 @@ namespace whermst {
 		/// <returns>A random float value in the range [0.0, 1.0]</returns>
 		inline float getRandomFloat() { return (float)rand() / RAND_MAX; }
 
-	}
+	
 }

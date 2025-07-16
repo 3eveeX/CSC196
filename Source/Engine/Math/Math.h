@@ -2,8 +2,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace whermst {
-	namespace math {
+namespace whermst::math {
 		constexpr float pi = 3.141592653589793238462643383279502f;
 		constexpr float twoPi = 2 * pi;
 		constexpr float halfPi = pi / 2;
@@ -30,5 +29,7 @@ namespace whermst {
 		using std::sinf;
 		using std::cos;
 		using std::cosf;
-	}
+		using std::atanf;
+		using std::atan2f;
+	
 }

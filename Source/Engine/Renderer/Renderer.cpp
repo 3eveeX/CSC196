@@ -43,6 +43,11 @@ namespace whermst {
         SDL_SetRenderDrawColor(_renderer, r, g, b, a);
     }
 
+    void Renderer::SetColourf(float r, float g, float b, float a)
+    {
+		SDL_SetRenderDrawColorFloat(_renderer, r, g, b, a);
+    }
+
     void Renderer::DrawLine(float x1, float y1, float x2, float y2)
     {
         SDL_RenderLine(_renderer, x1, y1, x2, y2);
