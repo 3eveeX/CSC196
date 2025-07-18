@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "../Math/Transform.h"
 
 
@@ -6,7 +7,7 @@ namespace whermst {
 	class Actor {
 	public:
 		Actor() = default;
-		Actor(const Transform& transform, class Model* model) :
+		Actor(const Transform& transform, std::shared_ptr<class Model> model) :
 			_transform{ transform },
 			_model{ model }
 		{}
@@ -18,7 +19,7 @@ namespace whermst {
 
 	protected:
 		Transform _transform;
-		Model* _model;
+		std::shared_ptr<Model> _model;
 
 	};
 }
