@@ -19,7 +19,13 @@ namespace whermst {
 
 		void Clear();
 		void Present();
+
+		int GetWidth() const { return _width; }
+		int GetHeight() const { return _height; }
 	private:
+		int _width{ 0 };
+		int _height{ 0 };
+
 		SDL_Window* _window = nullptr;
 		SDL_Renderer* _renderer = nullptr;
 

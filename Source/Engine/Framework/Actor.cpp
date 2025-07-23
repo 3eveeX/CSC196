@@ -6,7 +6,7 @@ namespace whermst{
 
 	void Actor::Update(float dt)
 	{
-		//
+		_transform.position += velocity * dt;
 	}
 
 	void Actor::Draw(Renderer& renderer)

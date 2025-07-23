@@ -1,5 +1,5 @@
 #pragma once
-#include "Game/Actor.h"
+#include "Framework/Actor.h"
 
 class Player : public whermst::Actor{
 public:

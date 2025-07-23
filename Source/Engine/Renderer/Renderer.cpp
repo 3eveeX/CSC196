@@ -21,6 +21,9 @@ namespace whermst {
 
     bool Renderer::CreateWindow(const std::string& name, int width, int height)
     {
+		_width = width;
+		_height = height;
+
         _window = SDL_CreateWindow(name.c_str(), width, height, 0);
         if (_window == nullptr) {
             std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
