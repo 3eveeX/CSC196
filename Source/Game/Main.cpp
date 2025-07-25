@@ -15,6 +15,8 @@
 #include "Math/Transform.h"
 #include "Framework/Scene.h"
 #include "Engine.h"
+#include "Renderer/Font.h"
+#include "Renderer/Text.h"
 
 #include "Game/Player.h"
 #include "Game/SpaceGame.h"
@@ -28,8 +30,14 @@ int main(int argc, char* argv[]) {
 	std::unique_ptr<SpaceGame> game = std::make_unique<SpaceGame>();
 	game->Initialize();
 
+   //initialize font
+	whermst::Font* font = new whermst::Font();
+	font->Load("8bitOperatorPlus8-Regular.ttf", 20);
 
-   
+    //initialize Text
+    whermst::Text* text = new whermst::Text(font);
+    text->Create(whermst::GetEngine().GetRenderer(), "Hello World", whermst::vec3{1, 1, 1});
+
     SDL_Event e;
     bool quit = false;
 
@@ -94,8 +102,8 @@ int main(int argc, char* argv[]) {
         whermst::vec2 position = whermst::GetEngine().GetInput().GetMousePosition();
 
         whermst::GetEngine().GetRenderer().SetColourf(2, 0.3, 1); // Set the colour to white
-     
-		
+
+        text->Draw(whermst::GetEngine().GetRenderer(), 40.0f, 40.0f);
 		game->Draw(); // Draw the game scene
 
        

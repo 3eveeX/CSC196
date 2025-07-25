@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "Actor.h"
+#include "../Core/StringHelper.h"
 #include "../Renderer/Renderer.h"
+
 
 namespace whermst {
 	/// <summary>
@@ -28,6 +30,18 @@ namespace whermst {
 	/// </summary>
 	/// <param name="actor">A unique pointer to the actor to be added. Ownership of the actor is transferred to the scene.</param>
 	void Scene::AddActor(std::unique_ptr<class Actor> actor){
+
+		actor->_scene = this; 
 		_actors.push_back(std::move(actor));
+	}
+	Actor* Scene::GetActorByName(const std::string& name)
+	{
+		for(auto& actor : _actors) {
+			if (tolower(actor-> name) == tolower(name)) {
+				return actor.get();
+			}
+		}
+
+		return nullptr;
 	}
 }

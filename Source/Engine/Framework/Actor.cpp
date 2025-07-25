@@ -6,11 +6,12 @@ namespace whermst{
 
 	void Actor::Update(float dt)
 	{
-		_transform.position += velocity * dt;
+		transform.position += velocity * dt;
+		velocity = velocity * (1.0f - damping * dt);
 	}
 
 	void Actor::Draw(Renderer& renderer)
 	{
-		_model->Draw(renderer, _transform);
+		_model->Draw(renderer, transform);
 	}
 }

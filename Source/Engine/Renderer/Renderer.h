@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL3/SDL.h>
 #include <iostream>
+#include <SDL3_ttf/SDL_ttf.h>
 
 namespace whermst {
 	class Renderer {
@@ -29,5 +30,6 @@ namespace whermst {
 		SDL_Window* _window = nullptr;
 		SDL_Renderer* _renderer = nullptr;
 
+		friend class Text;
 	};
 }

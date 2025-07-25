@@ -11,21 +11,24 @@ namespace whermst {
 		std::string tag;
 
 		vec2 velocity{ 0, 0 };
+		float damping{ 0.1f };
+		Transform transform;
+		class Scene* _scene{ nullptr };
 	public:
 		Actor() = default;
 		Actor(const Transform& transform, std::shared_ptr<class Model> model) :
-			_transform{ transform },
+			transform{ transform },
 			_model{ model }
 		{}
 
 		virtual void Update(float dt);
 		virtual void Draw(class Renderer& renderer);
 
-		Transform& GetTransform() { return _transform; }
+		Transform& GetTransform() { return transform; }
 
 	protected:
-		Transform _transform;
 		std::shared_ptr<Model> _model;
+		
 
 	};
 }
