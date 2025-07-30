@@ -12,6 +12,21 @@ namespace whermst
 		virtual void Shutdown() = 0;
 		virtual void Draw() = 0;
 
+		void AddPoints(int points) {
+			_score += points;
+		}
+		int GetPoints() const {
+			return _score;
+		}
+
+		void SetLives(int lives) {
+			_lives = lives;
+		}
+
+		int GetLives() const {
+			return _lives;
+		}
+
 	protected:
 		std::unique_ptr<class Scene> _scene;
 		int _score{ 0 };

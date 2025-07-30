@@ -3,6 +3,7 @@
 #include "Framework/Scene.h"
 #include "Renderer/Renderer.h"
 #include "Player.h"
+#include "Framework/Game.h"
 
 void Enemy::Update(float dt)
 {
@@ -23,4 +24,13 @@ void Enemy::Update(float dt)
 	transform.position.y = whermst::math::wrap(transform.position.y, 0.0f, (float)whermst::GetEngine().GetRenderer().GetHeight());
 
 	Actor::Update(dt);
+}
+
+void Enemy::OnCollision(Actor* other)
+{
+	if (whermst::tolower(other->tag) != whermst::tolower(tag)) {
+		destroyed = true;
+		_scene->GetGame()->AddPoints(100);
+		
+	}
 }

@@ -9,7 +9,8 @@ namespace whermst {
 	public:
 		std::string name;
 		std::string tag;
-
+		bool destroyed{ false };
+		float lifespan{ 0.0f };
 		vec2 velocity{ 0, 0 };
 		float damping{ 0.1f };
 		Transform transform;
@@ -24,7 +25,10 @@ namespace whermst {
 		virtual void Update(float dt);
 		virtual void Draw(class Renderer& renderer);
 
-		Transform& GetTransform() { return transform; }
+		virtual void OnCollision(Actor* other) = 0;
+
+		float GetRadius();
+
 
 	protected:
 		std::shared_ptr<Model> _model;

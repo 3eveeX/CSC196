@@ -24,6 +24,40 @@
 
 
 int main(int argc, char* argv[]) {
+
+    // Test getInt() variants
+    std::cout << "Integer Functions:\n";
+    std::cout << "getInt(): " << whermst::random::getInt() << "\n";
+    std::cout << "getInt(): " << whermst::random::getInt() << "\n";
+    std::cout << "getInt(10): " << whermst::random::getInt(10) << "\n";
+    std::cout << "getInt(10): " << whermst::random::getInt(10) << "\n";
+    std::cout << "getInt(5, 15): " << whermst::random::getInt(5, 15) << "\n";
+    std::cout << "getInt(5, 15): " << whermst::random::getInt(5, 15) << "\n";
+    std::cout << "getInt(-10, 10): " << whermst::random::getInt(-10, 10) << "\n\n";
+
+    // Test getReal() variants with float
+    std::cout << "Float Functions:\n";
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "getReal<float>(): " << whermst::random::getReal<float>() << "\n";
+    std::cout << "getReal<float>(): " << whermst::random::getReal<float>() << "\n";
+    std::cout << "getReal<float>(5.0f): " << whermst::random::getReal<float>(5.0f) << "\n";
+    std::cout << "getReal<float>(2.5f, 7.5f): " << whermst::random::getReal<float>(2.5f, 7.5f) << "\n";
+    std::cout << "getReal<float>(-1.0f, 1.0f): " << whermst::random::getReal<float>(-1.0f, 1.0f) << "\n\n";
+
+    // Test getReal() variants with double
+    std::cout << "Double Functions:\n";
+    std::cout << std::setprecision(10);
+    std::cout << "getReal<double>(): " << whermst::random::getReal<double>() << "\n";
+    std::cout << "getReal<double>(100.0): " << whermst::random::getReal<double>(100.0) << "\n";
+    std::cout << "getReal<double>(0.0, 2.0): " << whermst::random::getReal<double>(0.0, 2.0) << "\n\n";
+
+    // Test getBool()
+    std::cout << "Boolean Functions:\n";
+    for (int i = 0; i < 10; ++i) {
+        std::cout << "getBool(): " << std::boolalpha << whermst::random::getBool() << "\n";
+    }
+    std::cout << "\n";
+
     // Get current directory path
     std::cout << "Directory Operations:\n";
     std::cout << "Current directory: " << whermst::file::GetCurrentDirectory() << "\n";
@@ -76,8 +110,8 @@ int main(int argc, char* argv[]) {
 	font->Load("8bitOperatorPlus8-Regular.ttf", 20);
 
     //initialize Text
-    whermst::Text* text = new whermst::Text(font);
-    text->Create(whermst::GetEngine().GetRenderer(), "Hello World", whermst::vec3{1, 1, 1});
+    //whermst::Text* text = new whermst::Text(font);
+    //text->Create(whermst::GetEngine().GetRenderer(), "Hello World", whermst::vec3{1, 1, 1});
 
     SDL_Event e;
     bool quit = false;
@@ -144,7 +178,7 @@ int main(int argc, char* argv[]) {
 
         whermst::GetEngine().GetRenderer().SetColourf(2, 0.3, 1); // Set the colour to white
 
-        text->Draw(whermst::GetEngine().GetRenderer(), 40.0f, 40.0f);
+        //text->Draw(whermst::GetEngine().GetRenderer(), 40.0f, 40.0f);
 		game->Draw(); // Draw the game scene
 
        
@@ -152,6 +186,8 @@ int main(int argc, char* argv[]) {
        
         whermst::GetEngine().GetRenderer().Present(); // Render the screen
     }
+	game->Shutdown(); // Shutdown the game
+	game.release(); // Release the game object
 	whermst::GetEngine().Shutdown(); // Shutdown the engine
 
     return 0;

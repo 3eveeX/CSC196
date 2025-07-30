@@ -3,12 +3,14 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <list>
 
 namespace whermst {
 	class Actor;
+	class Game;
 	class Scene {
 	public:
-		Scene() = default;
+		Scene(Game* game) : _game{ game } {}
 
 		void Update(float dt);
 		void Draw(class Renderer& renderer);
@@ -21,10 +23,11 @@ namespace whermst {
 		 template <typename T = Actor>
 		 std::vector<T*> GetActorsByTag(const std::string& tag);
 
-		 
+		 class Game* GetGame() const { return _game; }
 		
 	private:
-		std::vector<std::unique_ptr<Actor>> _actors;
+		class Game* _game{ nullptr };
+		std::list<std::unique_ptr<Actor>> _actors;
 
 	
 	};

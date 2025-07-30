@@ -1,5 +1,7 @@
 #pragma once
 #include "Framework/Game.h"
+#include "Renderer/Font.h"
+#include "Renderer/Text.h"
 
 class SpaceGame : public whermst::Game {
 public:
@@ -28,5 +30,12 @@ public:
 private:
 	GameState _gameState = GameState::Initialize;
 	float _enemySpawnTimer{ 0 };
+
+	std::shared_ptr<whermst::Font> _titleFont;
+	std::shared_ptr<whermst::Font> _uiFont;
+
+	std::unique_ptr<whermst::Text> _titleText;
+	std::unique_ptr<whermst::Text> _scoreText;
+	std::unique_ptr<whermst::Text> _livesText;
 };
 

@@ -12,7 +12,10 @@ public:
 
 	float speed;
 	float rotateRate;
+	float fireTime = 0.2f;
+	float fireTimer = 0.2f;
 
-private:
+	// Inherited via Actor
+	void OnCollision(Actor* other) override;
 
 };

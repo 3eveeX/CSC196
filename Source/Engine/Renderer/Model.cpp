@@ -16,4 +16,18 @@ namespace whermst{
 		Draw(renderer, transform.position, transform.rotation, transform.scale);
 	}
 
+	/// <summary>
+	/// Calculates and updates the model's radius based on the farthest point from the origin.
+	/// </summary>
+	void Model::CalculateRadius()
+	{
+		_radius = 0.0f;
+		for (auto& point : _points) {
+		float length = point.Length();
+			if (length > _radius) {
+				_radius = length;
+			}
+		}
+	}
+
 }
