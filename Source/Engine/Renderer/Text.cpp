@@ -19,7 +19,7 @@ namespace whermst {
 	/// <param name="text">The string to be rendered as text.</param>
 	/// <param name="color">The color of the text, represented as a vec3 (RGB components in the range [0, 1]).</param>
 	/// <returns>True if the text texture was created successfully; false otherwise.</returns>
-	bool Text::Create(Renderer& renderer, const std::string& text, const vec3& color)
+	bool Text::Create(Renderer& renderer, const std::string& text, const vec3& color = {1, 1, 1})
 	{
 		SDL_Color c{ (uint8_t)(color.r * 255), (uint8_t)(color.g * 255), (uint8_t)(color.b * 255), 255 };
 		SDL_Surface* surface = TTF_RenderText_Solid(_font->_ttfFont, text.c_str(), text.size(), c);
@@ -45,11 +45,13 @@ namespace whermst {
 	/// <param name="renderer">The renderer used to draw the text.</param>
 	/// <param name="x">The x-coordinate where the text will be drawn.</param>
 	/// <param name="y">The y-coordinate where the text will be drawn.</param>
-	void Text::Draw(Renderer& renderer, int x, int y)
+	void Text::Draw(Renderer& renderer, int x, int y, float scale)
 	{
 		assert(_texture != nullptr);
 
-		float width, height;
+		float width = 1, height = 1;
+		width *= scale;
+		height *= scale;
 		bool success = SDL_GetTextureSize(_texture, &width, &height);
 		assert(success);
 

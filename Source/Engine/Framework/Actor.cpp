@@ -6,7 +6,10 @@ namespace whermst{
 
 	void Actor::Update(float dt)
 	{
-		if (destroyed) return;
+		if (destroyed) {
+			
+			return; 
+		}
 		if (lifespan != 0.0f) {
 			lifespan -= dt;
 			destroyed = lifespan <= 0.0f;
@@ -22,6 +25,6 @@ namespace whermst{
 	}
 	float Actor::GetRadius()
 	{
-		return (_model) ? _model->GetRadius() * transform.scale : 0;
+		return (_model) ? _model->GetRadius() * transform.scale * 0.8f : 0;
 	}
 }

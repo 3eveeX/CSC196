@@ -2,6 +2,7 @@
 #include "Renderer/Renderer.h"
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "Renderer/ParticleSystem.h"
 
 namespace whermst
 {
@@ -22,6 +23,10 @@ namespace whermst
 
 		_audio = std::make_unique<whermst::AudioSystem>();
 		_audio->Initialize();
+
+		_particle = std::make_unique<whermst::ParticleSystem>();
+		_particle->Initialize(5000);
+
 		return true;
 	}
 	void Engine::Update()
@@ -29,9 +34,11 @@ namespace whermst
 		_time.Tick();
 		_input->Update();
 		_audio->Update();
+		_particle->Update(_time.GetDeltaTime());
 	}
 	void Engine::Shutdown()
 	{
+	_particle->Shutdown();
 	_audio->Close();
 	_input->Close();
 	_renderer->CloseWindow();

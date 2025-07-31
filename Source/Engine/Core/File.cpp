@@ -1,4 +1,5 @@
 #include "File.h"
+#include "StringHelper.h"
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -42,6 +43,98 @@ namespace whermst::file
 
         return !ec && result;
     }
+
+    int GetLineCountInFile(const std::string& path)
+    {
+		std::ifstream file(path);
+        if (!file.is_open()) {
+            return -1; // error opening file
+        }
+        int lineCount = 0;
+        std::string line;
+        while (std::getline(file, line)) {
+            ++lineCount;
+        }
+        file.close();
+        return lineCount;
+	}
+
+    void SortFileByScore(const std::string& path, const std::string& derivative, int offset, int lineAmount)
+    {
+        if (offset == 0) {
+			offset = derivative.length(); 
+        }
+		std::vector<std::string> playerNames;
+		std::vector<int> scores;
+        std::ifstream score_fileRead(path);
+        std::string scoreString;
+        while (std::getline(score_fileRead, scoreString)) {
+            if (scoreString.find(derivative) == std::string::npos) {
+                continue; // skip lines that do not contain the derivative
+			}
+			playerNames.push_back(scoreString);
+			// Extract the score after the derivative
+            scores.push_back(std::stoi(scoreString.substr(scoreString.find(derivative) + offset)));
+        }
+        std::cout << "Before Sort" << std::endl;
+        score_fileRead.close();
+
+        std::sort(scores.begin(), scores.end(), std::greater<int>());
+
+		std::cout << "After Sort, before write" << std::endl;
+        scores.erase(std::unique(scores.begin(), scores.end()), scores.end());
+
+        while (scores.size() > lineAmount) {
+            scores.pop_back();
+        }
+
+		// Clear the file before writing sorted scores
+		ClearFile(path);
+		// Write the sorted scores back to the file
+        for (const auto& score : scores) {
+            std::string scoreStr = std::to_string(score);
+
+            for (const auto& name : playerNames) {
+                // Check if the score is in the player's name
+                if (name.find(scoreStr) == std::string::npos) {
+                    continue; // Skip if not found
+                }
+
+                // Find position of ':' in the name
+                size_t colonPos = name.find(':');
+                std::string playerName = (colonPos != std::string::npos)
+                    ? name.substr(0, colonPos)
+                    : name; // fallback if no ':'
+
+                // Build the output line
+                std::string outputLine = playerName + derivative + scoreStr + "\n";
+
+                // Write to file
+                WriteTextFile(path, outputLine, true);
+
+                // Debug output
+                std::cout << "writing" << std::endl;
+            }
+        }
+		std::cout << "After Write" << std::endl;
+    }
+
+    std::string ReadFileByLine(const std::string& path)
+    {
+		std::string content;
+		StringBuilder sb;
+		std::ifstream file(path);
+        if (!file.is_open()) {
+            return std::string(); // return empty string on error
+		}
+        while (std::getline(file, content)) {
+            sb.append(content + "\n");
+        }
+        return sb.toString();
+    }
+    
+
+    
 
     std::vector<std::string> GetFilesInDirectory(const std::string& path)
     {
@@ -104,5 +197,14 @@ namespace whermst::file
 		file << content;
 		file.close();
 		return true;
+    }
+    bool ClearFile(const std::string& path)
+    {                 
+        std::ofstream file(path, std::ios::trunc);
+        if (!file.is_open()) {
+            return false;
+        }
+        file.close();
+        return true;
     }
 }

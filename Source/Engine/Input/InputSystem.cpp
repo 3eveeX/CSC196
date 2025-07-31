@@ -1,5 +1,6 @@
 #include "InputSystem.h"
 #include <SDL3/SDL.h>
+#include "../Renderer/Renderer.h"  
 namespace whermst {
 	bool InputSystem::Initialize() {
 		int numKeys;
@@ -33,4 +34,40 @@ namespace whermst {
 		_mouseButtonState[(uint8_t)MouseButton::Right] = mouseButtonState & SDL_BUTTON_RMASK;
 
 	}
+	void InputSystem::StartTextInput(class Renderer& renderer)
+	{
+		SDL_StartTextInput(renderer.GetWindow());
+		_textBuffer.clear();
+		_textBuffer = "";
+	}
+
+	void InputSystem::StopTextInput(class Renderer& renderer)
+	{
+		SDL_StopTextInput(renderer.GetWindow());
+	}
+
+    void InputSystem::HandleEvent(const SDL_Event& e)  
+    {  
+        if (e.type == SDL_EVENT_TEXT_INPUT) {  
+            // Append new typed characters to the buffer  
+            _textBuffer += e.text.text;  
+        }  
+        else if (e.type == SDL_EVENT_KEY_DOWN) {  
+            if (e.key.key == SDLK_BACKSPACE && !_textBuffer.empty()) {  
+                _textBuffer.pop_back();  
+            }  
+        }  
+    }
+
+	std::string InputSystem::GetTextInput() const
+	{
+		return _textBuffer;
+	}
+
+	void InputSystem::ClearTextInput()
+	{
+		_textBuffer.clear();
+		
+	}
+	
 }

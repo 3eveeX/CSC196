@@ -2,6 +2,8 @@
 #include "../Math/Vector2.h"
 #include <vector>
 #include <array>
+#include <string>
+#include <SDL3/SDL.h>
 
 
 namespace whermst {
@@ -36,6 +38,13 @@ namespace whermst {
 		const vec2& GetMousePosition() const { return _mousePosition; }
 		const vec2& GetPreviousMousePosition() const { return _prevMousePosition; }
 
+		void StartTextInput(class Renderer& renderer);
+		void StopTextInput(class Renderer& renderer);
+		void HandleEvent(const SDL_Event& e);
+
+		std::string GetTextInput() const;
+		void ClearTextInput();
+
 	private:
 		std::vector<bool> _keyboardState;
 		std::vector<bool> _prevKeyboardState;
@@ -45,5 +54,7 @@ namespace whermst {
 
 		std::array<bool, 3> _mouseButtonState{ false, false, false };
 		std::array<bool, 3> _prevMouseButtonState{ false, false, false };
+
+		std::string _textBuffer;
 	};
 }

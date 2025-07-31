@@ -24,6 +24,9 @@ namespace whermst {
 		 std::vector<T*> GetActorsByTag(const std::string& tag);
 
 		 class Game* GetGame() const { return _game; }
+		 void RemoveAllActors() {
+			 _actors.clear();
+		 }
 		
 	private:
 		class Game* _game{ nullptr };

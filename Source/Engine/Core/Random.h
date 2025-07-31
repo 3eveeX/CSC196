@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdlib>
 #include <random>
+#include "Math/Math.h"
+#include "Math/Vector2.h"
 
 namespace whermst::random {
 
@@ -95,5 +97,15 @@ namespace whermst::random {
             return dist(generator());
         }
 
-	
+        /// <summary>
+        /// Generates a random 2D unit vector on the circumference of the unit circle.
+        /// </summary>
+        /// <returns>A whermst::vec2 representing a point on the unit circle, with both x and y components in the range [-1, 1].</returns>
+        inline whermst::vec2 onUnitCircle() {
+            float radians = getReal<float>(math::twoPi);
+            whermst::vec2 v;
+            v.x = math::cosf(radians);
+            v.y = math::sinf(radians);
+            return v;
+        }
 }

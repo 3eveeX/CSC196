@@ -31,7 +31,7 @@ namespace whermst {
 
 
 	protected:
-		std::shared_ptr<Model> _model;
+		std::shared_ptr<class Model> _model;
 		
 
 	};
