@@ -13,7 +13,7 @@
 
 void Player::Update(float dt)
 {
-    whermst::GetEngine().GetAudio().AddSound("Laser.mp3", "laser");
+    
     whermst::Particle particle;
     particle.position = transform.position;
     particle.velocity = whermst::vec2{ whermst::random::getReal(-5.0f, 5.0f), 0};
@@ -62,7 +62,7 @@ void Player::Update(float dt)
 void Player::OnCollision(Actor* other)
 {
     if (whermst::tolower(other->tag) != whermst::tolower(tag)) {
-
+		whermst::GetEngine().GetAudio().PlaySound("playerdeath");
         destroyed = true;
         dynamic_cast<SpaceGame*>(_scene->GetGame())->OnPlayerDeath();
     }

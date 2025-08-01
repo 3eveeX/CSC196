@@ -71,6 +71,43 @@ namespace whermst {
 
 			return v;
 		}
+
+		/// <summary>
+		/// Calculates the dot product of two 2D vectors.
+		/// </summary>
+		/// <param name="a">The first 2D vector.</param>
+		/// <param name="b">The second 2D vector.</param>
+		/// <returns>The dot product of the two vectors as a float.</returns>
+		static float Dot(const Vector2& a, const Vector2& b) {
+			return (a.x * b.x) + (a.y * b.y);
+		}
+
+		/// <summary>
+		/// Calculates the 2D cross product (scalar) of two vectors.
+		/// </summary>
+		/// <param name="a">The first 2D vector.</param>
+		/// <param name="b">The second 2D vector.</param>
+		/// <returns>The scalar value of the cross product of vectors a and b.</returns>
+		static float Cross(const Vector2& a, const Vector2& b) {
+			return (a.x * b.y) - (a.y * b.x);
+		}
+
+		/// <summary>
+		/// Calculates the angle in radians between two 2D vectors.
+		/// </summary>
+		/// <param name="a">The first 2D vector.</param>
+		/// <param name="b">The second 2D vector.</param>
+		/// <returns>The angle in radians between vectors a and b.</returns>
+		static float AngleBetween(const Vector2& a, const Vector2& b) {
+			return math::acosf(Dot(a, b));
+		}
+
+		static float SignedAngleBetween(const Vector2& a, const Vector2& b) {
+			float y = Cross(a, b);
+			float x = Dot(a, b);
+			return math::atan2f(y, x);
+		}
+
 	};
 
 

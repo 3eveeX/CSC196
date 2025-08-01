@@ -15,7 +15,7 @@ namespace whermst {
 
 		bool AddSound(const std::string& filename, const std::string& name = "filename");
 
-		bool PlaySound(const std::string& name);
+		bool PlaySound(const std::string& name/*, const int volume*/);
 
 	private:
 		bool CheckFmodResult(FMOD_RESULT result);

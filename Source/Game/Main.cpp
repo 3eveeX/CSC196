@@ -52,13 +52,20 @@ int main(int argc, char* argv[]) {
     whermst::GetEngine().GetAudio().AddSound("cowbell.wav", "cowbell");
     whermst::GetEngine().GetAudio().AddSound("open-hat.wav", "open-hat");
     whermst::GetEngine().GetAudio().AddSound("snare.wav", "snare");
-
-    //audio.PlaySound("filename");
+    whermst::GetEngine().GetAudio().AddSound("Laser.mp3", "laser");
+    whermst::GetEngine().GetAudio().AddSound("explode.mp3", "Explode");
+    whermst::GetEngine().GetAudio().AddSound("BGM.mp3", "bgm");
+    whermst::GetEngine().GetAudio().AddSound("enemyHit.mp3", "enemyHit");
+    whermst::GetEngine().GetAudio().AddSound("PlayerDeath.mp3", "playerdeath");
 
     //std::vector<whermst::vec2> points;
     //std::vector<std::vector<whermst::vec2>> confirmed;
+    whermst::GetEngine().GetAudio().PlaySound("bgm");
+    std::cout << "Playing BGM test" << std::endl;
+  
     //MAIN LOOP
     while (!quit) {
+
         //update engine
 		whermst::GetEngine().Update();
 		game -> Update(whermst::GetEngine().GetTime().GetDeltaTime());

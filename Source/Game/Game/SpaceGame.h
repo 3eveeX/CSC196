@@ -34,6 +34,7 @@ private:
 	GameState _gameState = GameState::Initialize;
 	float _enemySpawnTimer{ 0 };
 	float _stateTimer{ 0 };
+	float _bgmTimer{ 0 };
 	std::string _playerName = "";
 
 	std::shared_ptr<whermst::Font> _titleFont;

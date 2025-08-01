@@ -20,6 +20,10 @@ namespace whermst{
 		void Draw(class Renderer& renderer, const Transform& transform);
 
 		float GetRadius() const { return _radius; }
+
+		void SetColour(const vec3& colour) { _colour = colour; }
+
+		
 	private:
 		void CalculateRadius();
 	private:

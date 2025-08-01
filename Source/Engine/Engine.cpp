@@ -16,7 +16,7 @@ namespace whermst
 		_renderer = std::make_unique<whermst::Renderer>();
 
 		_renderer->Initialize();
-		_renderer->CreateWindow("Space", 1280, 1024);
+		_renderer->CreateWindow("Unnamed Space Game", 1280*1.5, 1024*1.5);
 
 		_input = std::make_unique<whermst::InputSystem>();
 		_input->Initialize();

@@ -21,13 +21,19 @@ bool SpaceGame::Initialize()
 	std::cout << whermst::file::GetCurrentDirectory() << std::endl;
 	whermst::file::SetCurrentDirectory("Assets");
 	std::cout << whermst::file::GetCurrentDirectory() << std::endl;
+	whermst::GetEngine().GetAudio().PlaySound("bgm");
+	_bgmTimer = 190;
     return true;
 
 }    
 
 void SpaceGame::Update(float dt)
 {
-    
+    _bgmTimer -= dt;
+    if (_bgmTimer <= 0) {
+        whermst::GetEngine().GetAudio().PlaySound("bgm");
+        _bgmTimer = 190;
+	}
     switch (_gameState)
     {
     case SpaceGame::GameState::Initialize:
@@ -46,7 +52,7 @@ void SpaceGame::Update(float dt)
 		_gameState = SpaceGame::GameState::Title;
         break;
     case SpaceGame::GameState::Title:
-        
+        _scene->RemoveAllActors();
         if (whermst::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_SPACE)) {
             _gameState = SpaceGame::GameState::StartGame;
         }
@@ -78,14 +84,34 @@ void SpaceGame::Update(float dt)
         _enemySpawnTimer -= dt;
         if (_enemySpawnTimer <= 0) {
             _enemySpawnTimer = 4.0f;
-            std::shared_ptr<whermst::Model> enemyModel = std::make_shared<whermst::Model>(GameData::enemyPoints, whermst::vec3{ 0.4f, 0.5f, 0.0f });
-                  whermst::Transform transform{ whermst::vec2{whermst::random::getReal() * 1280, whermst::random::getReal() * 1024}, 0, 5 };
-                  std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
-                  enemy->damping = 0.2f;
-                  enemy->speed = 1.0f  + whermst::random::getReal() * 100.0f; // Random speed between 100 and 200
-                  enemy->fireTime = 2;
+			Player* player = _scene->GetActorByName<Player>("Player");
+            if (player) {
+
+                whermst::vec2 position = player->transform.position + whermst::random::onUnitCircle() * whermst::random::getReal(200.0f, 500.0f);
+
+                std::shared_ptr<whermst::Model> enemyModel = std::make_shared<whermst::Model>(GameData::enemyPoints);
+                whermst::Transform transform{ position, whermst::random::getReal(0.0f, 360.0f), 5 };
+                std::unique_ptr<Enemy> enemy = std::make_unique<Enemy>(transform, enemyModel);
+                enemy->hitPoints = whermst::random::getInt(1, 3); // Random hit points between 1 and 3
+                if (enemy->hitPoints == 3) { 
+                    enemyModel->SetColour(whermst::vec3{ 0.4f, 0.5f, 0.0f }); 
+                    enemy->fireTime = 1.0f;
+                    enemy->speed = 1.0f  + whermst::random::getReal(1.0f, 2.0f) * 100.0f;
+                }
+                else if (enemy->hitPoints == 2) { 
+                    enemyModel->SetColour(whermst::vec3{ 0.7f, 0.6f, 0.1f }); 
+                    enemy->fireTime = 2.0f;
+                    enemy->speed = 1.0f  + whermst::random::getReal(1.0f, 2.0f) * 50.0f;
+                }
+                else if (enemy->hitPoints == 1) { 
+                    enemyModel->SetColour(whermst::vec3{ 0.7f, 0.0f, 0.0f }); 
+				    enemy->fireTime = 4.0f;
+                    enemy->speed = 1.0f  + whermst::random::getReal(1.0f, 2.0f) * 10.0f;
+                }
+                  enemy->damping = 0.9f;
                   enemy->tag = "Enemy";
                   _scene->AddActor(std::move(enemy));
+            }
         }
 
         break;
@@ -106,7 +132,7 @@ void SpaceGame::Update(float dt)
 		break;
     case SpaceGame::GameState::GameOver:
 		_playerName = whermst::GetEngine().GetInput().GetTextInput();
-        if (!_playerName.empty()&& whermst::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_RETURN)) {
+        if (!_playerName.empty() && whermst::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_RETURN)) {
 			whermst::GetEngine().GetInput().StopTextInput(whermst::GetEngine().GetRenderer());
 			std::string str = _playerName + ": " + std::to_string(_score) + "\n";
             std::string score = str.substr(str.find(": ") + 2);
@@ -119,6 +145,11 @@ void SpaceGame::Update(float dt)
 			else {
 				whermst::file::WriteTextFile("Highscore.txt", str);
 			}
+			_playerName = "";
+			_gameState = GameState::Title;
+        }
+        else if (whermst::GetEngine().GetInput().GetKeyPressed(SDL_SCANCODE_RETURN)) {
+            whermst::GetEngine().GetInput().StopTextInput(whermst::GetEngine().GetRenderer());
 			_playerName = "";
 			_gameState = GameState::Title;
         }
@@ -139,8 +170,10 @@ void SpaceGame::Shutdown()
 void SpaceGame::Draw(whermst::Renderer& renderer)  
 {  
     if (_gameState == GameState::Title) {  
-        _titleText->Create(renderer, "Test", whermst::vec3{ 1, 1, 1 });  
-        _titleText->Draw(renderer, renderer.GetWidth()/2 - 200, 20);  
+        _titleText->Create(renderer, "Unnamed Space Game", whermst::vec3{ 1, 1, 1 });  
+        _titleText->Draw(renderer, 200, 20);  
+        _titleText->Create(renderer, "[[SPACE]] to start", whermst::vec3{ 1, 1, 1 });  
+        _titleText->Draw(renderer, 200, 330);  
 
 		_titleText->Create(renderer, "Top 3 High Scores", whermst::vec3{ 1, 1, 1 });
 		_titleText->Draw(renderer, renderer.GetWidth() / 5 - 200, renderer.GetHeight()/1.5 - 110, 1.5f);
@@ -172,11 +205,11 @@ void SpaceGame::Draw(whermst::Renderer& renderer)
         }  
     }  
     if (_gameState != GameState::Title) {
-        _scoreText->Create(renderer, std::to_string(_score), whermst::vec3{ 1, 1, 1 });
+        _scoreText->Create(renderer, "Score: " + std::to_string(_score), whermst::vec3{1, 1, 1});
         _scoreText->Draw(renderer, 20, 20);
 
-        _livesText->Create(renderer, std::to_string(_lives), whermst::vec3{ 1, 1, 1 });
-        _livesText->Draw(renderer, renderer.GetWidth() - 200, 20);
+        _livesText->Create(renderer, "Lives: " + std::to_string(_lives), whermst::vec3{1, 1, 1});
+        _livesText->Draw(renderer, renderer.GetWidth() - 700, 20);
     }
     whermst::GetEngine().GetPT().Draw(renderer);
     _scene -> Draw(renderer);

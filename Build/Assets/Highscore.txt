@@ -1,3 +1,4 @@
 tasty: 1400
+AAAAAAAAAAAAAA: 1400
 Xadia: 1300
-e: 1200
+A: 700

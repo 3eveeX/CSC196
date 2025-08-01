@@ -42,10 +42,18 @@ namespace whermst::math {
 		using std::sqrtf;
 		using std::sqrt;
 		using std::sin;
+		using std::asin;
 		using std::sinf;
+		using std::asinf;
 		using std::cos;
+		using std::acos;
 		using std::cosf;
+		using std::acosf;
+		using std::tan;
+		using std::atan;
+		using std::tanf;
 		using std::atanf;
+		using std::atan2;
 		using std::atan2f;
 	
 }

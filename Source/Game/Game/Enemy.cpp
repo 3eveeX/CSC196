@@ -8,19 +8,23 @@
 #include "Projectile.h"
 #include "Renderer/Model.h"
 #include "Math/Vector3.h"
-#include <Renderer/ParticleSystem.h>
-#include <Core/Random.h>
+#include "Renderer/ParticleSystem.h"
+#include "Core/Random.h"
 
 void Enemy::Update(float dt)
 {
-	whermst::GetEngine().GetAudio().AddSound("explode.mp3", "Explode");
+	
 
 	Player* player = _scene -> GetActorByName<Player>("Player");
 	if (player) {
 		whermst::vec2 direction{ 0, 0 };
 		direction = player->transform.position - transform.position;
+
+
 		direction.Normalized();
-		transform.rotation = whermst::math::radToDeg(direction.Angle());
+		whermst::vec2 forward = whermst::vec2{ 1, 0 }.rotate(whermst::math::degToRad(transform.rotation));
+		float angle = whermst::vec2::SignedAngleBetween(forward, direction);
+		transform.rotation += whermst::math::radToDeg(angle * dt);
 	}
 
 	whermst::vec2 force = whermst::vec2{1, 0}.rotate(whermst::math::degToRad(transform.rotation)) * speed;
@@ -46,6 +50,31 @@ void Enemy::Update(float dt)
 void Enemy::OnCollision(Actor* other)
 {
 	if (whermst::tolower(other->tag) != whermst::tolower(tag)) {
+
+		if (hitPoints > 0) {
+			whermst::GetEngine().GetAudio().PlaySound("enemyHit");
+			if (other->name == "Player") {
+				hitPoints = 0;
+			}
+			else {
+				hitPoints--;
+			}
+		}
+
+		
+		if (hitPoints == 2) {
+			_model->SetColour(whermst::vec3{ 0.7f, 0.6f, 0.1f });
+			fireTime = 2.0f;
+			speed = 1.0f + whermst::random::getReal(1.0f, 2.0f) * 50.0f;
+		}
+		else if (hitPoints == 1) { 
+			_model->SetColour(whermst::vec3{ 0.7f, 0.0f, 0.0f }); 
+			fireTime = 4.0f;
+			speed = 1.0f + whermst::random::getReal(1.0f, 2.0f) * 10.0f;
+		}
+
+
+		if(hitPoints == 0){
 		whermst::GetEngine().GetAudio().PlaySound("Explode");
 		destroyed = true;
 		_scene->GetGame()->AddPoints(100);
@@ -54,7 +83,7 @@ void Enemy::OnCollision(Actor* other)
 			particle.position = transform.position;
 			particle.velocity = (whermst::random::onUnitCircle() * 3) * whermst::random::getReal(1.0f, 40.0f);
 			int colourRandom = whermst::random::getInt() % 3;
-			if( colourRandom == 0) {
+			if (colourRandom == 0) {
 				particle.colour = whermst::vec3{ 1.0f, 0, 0 }; // Red
 			}
 			else if (colourRandom == 1) {
@@ -66,6 +95,7 @@ void Enemy::OnCollision(Actor* other)
 			particle.lifespan = 2;
 			particle.active = true;
 			whermst::GetEngine().GetPT().AddParticle(particle);
+		}
 		}
 	}
 }

@@ -55,7 +55,7 @@ namespace whermst {
 
 		return true;
 	}
-	bool AudioSystem::PlaySound(const std::string& name)
+	bool AudioSystem::PlaySound(const std::string& name/*, const int volume*/)
 	{
 		std::string key = name;
 		//convert to lowercase
@@ -70,6 +70,8 @@ namespace whermst {
 
 		FMOD_RESULT result = _system -> playSound(_sounds[name], 0, false, nullptr);
 		if (!CheckFmodResult(result)) return false;
+		/*FMOD_RESULT volumeResult = _system->setVolume((float)volume / 100.0f);
+		if (!CheckFmodResult(volumeResult)) return false;*/
 		return true;
 	}
 }
